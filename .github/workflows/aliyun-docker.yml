@@ -14,31 +14,31 @@ jobs:
   push-official-images:
     # 默认关闭：仅在仓库变量 ENABLE_ACR_BUILD 显式设为 true 时才构建推送，
     # 规避历史 tag 重建等非发布场景误触发镜像覆盖。
-    if: github.repository == 'owl234/ARL-Next' && vars.ENABLE_ACR_BUILD == 'true'
+    if: true
     runs-on: ubuntu-latest
     steps:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.ALIYUN_REGISTRY }}
-          username: ${{ secrets.ALIYUN_REGISTRY_USER }}
-          password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull and Push Official Images
         run: |
           docker pull mongo:7.0
-          docker tag mongo:7.0 ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/mongo:7.0
-          docker push ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/mongo:7.0
+          docker tag mongo:7.0 ghcr.io/${{ github.repository_owner }}/mongo:7.0
+          docker push ghcr.io/${{ github.repository_owner }}/mongo:7.0
           
           docker pull rabbitmq:3-alpine
-          docker tag rabbitmq:3-alpine ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/rabbitmq:3-alpine
-          docker push ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/rabbitmq:3-alpine
+          docker tag rabbitmq:3-alpine ghcr.io/${{ github.repository_owner }}/rabbitmq:3-alpine
+          docker push ghcr.io/${{ github.repository_owner }}/rabbitmq:3-alpine
 
           docker pull willfarrell/autoheal:latest
-          docker tag willfarrell/autoheal:latest ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/autoheal:latest
-          docker push ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/autoheal:latest
+          docker tag willfarrell/autoheal:latest ghcr.io/${{ github.repository_owner }}/autoheal:latest
+          docker push ghcr.io/${{ github.repository_owner }}/autoheal:latest
 
   build-frontend:
-    if: github.repository == 'owl234/ARL-Next' && vars.ENABLE_ACR_BUILD == 'true'
+    if: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,9 +50,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.ALIYUN_REGISTRY }}
-          username: ${{ secrets.ALIYUN_REGISTRY_USER }}
-          password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Frontend
         uses: docker/build-push-action@v6
         with:
@@ -62,12 +62,12 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/arl-frontend:latest
+          tags: ghcr.io/${{ github.repository_owner }}/arl-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   build-web-worker:
-    if: github.repository == 'owl234/ARL-Next' && vars.ENABLE_ACR_BUILD == 'true'
+    if: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -85,9 +85,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.ALIYUN_REGISTRY }}
-          username: ${{ secrets.ALIYUN_REGISTRY_USER }}
-          password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Web and Worker
         uses: docker/build-push-action@v6
         with:
@@ -98,15 +98,15 @@ jobs:
           provenance: false
           sbom: false
           tags: |
-            ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/arl-web:latest
-            ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/arl-worker:latest
+            ghcr.io/${{ github.repository_owner }}/arl-web:latest
+            ghcr.io/${{ github.repository_owner }}/arl-worker:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             NUCLEI_CACHEBUST=${{ github.run_id }}
 
   build-puppeteer:
-    if: github.repository == 'owl234/ARL-Next' && vars.ENABLE_ACR_BUILD == 'true'
+    if: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -118,9 +118,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.ALIYUN_REGISTRY }}
-          username: ${{ secrets.ALIYUN_REGISTRY_USER }}
-          password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Puppeteer Service
         uses: docker/build-push-action@v6
         with:
@@ -130,12 +130,12 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/arl-puppeteer:latest
+          tags: ghcr.io/${{ github.repository_owner }}/arl-puppeteer:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   build-osint:
-    if: github.repository == 'owl234/ARL-Next' && vars.ENABLE_ACR_BUILD == 'true'
+    if: true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -147,9 +147,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.ALIYUN_REGISTRY }}
-          username: ${{ secrets.ALIYUN_REGISTRY_USER }}
-          password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push OSINT Service
         uses: docker/build-push-action@v6
         with:
@@ -158,12 +158,12 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/osint-service:latest
+          tags: ghcr.io/${{ github.repository_owner }}/osint-service:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   create-github-release:
-    if: github.repository == 'owl234/ARL-Next' && startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-frontend, build-web-worker, build-puppeteer, build-osint]
     runs-on: ubuntu-latest
     permissions:
