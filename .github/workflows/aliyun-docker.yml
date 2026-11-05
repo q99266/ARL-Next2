@@ -20,22 +20,22 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Pull and Push Official Images
         run: |
           docker pull mongo:7.0
-          docker tag mongo:7.0 ghcr.io/${{ github.repository_owner }}/mongo:7.0
-          docker push ghcr.io/${{ github.repository_owner }}/mongo:7.0
+          docker tag mongo:7.0 johnny1314/mongo:7.0
+          docker push johnny1314/mongo:7.0
           
           docker pull rabbitmq:3-alpine
-          docker tag rabbitmq:3-alpine ghcr.io/${{ github.repository_owner }}/rabbitmq:3-alpine
-          docker push ghcr.io/${{ github.repository_owner }}/rabbitmq:3-alpine
+          docker tag rabbitmq:3-alpine johnny1314/rabbitmq:3-alpine
+          docker push johnny1314/rabbitmq:3-alpine
 
           docker pull willfarrell/autoheal:latest
-          docker tag willfarrell/autoheal:latest ghcr.io/${{ github.repository_owner }}/autoheal:latest
-          docker push ghcr.io/${{ github.repository_owner }}/autoheal:latest
+          docker tag willfarrell/autoheal:latest johnny1314/autoheal:latest
+          docker push johnny1314/autoheal:latest
 
   build-frontend:
     if: true
@@ -50,9 +50,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Frontend
         uses: docker/build-push-action@v6
         with:
@@ -62,7 +62,7 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: ghcr.io/${{ github.repository_owner }}/arl-frontend:latest
+          tags: johnny1314/arl-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -85,9 +85,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Web and Worker
         uses: docker/build-push-action@v6
         with:
@@ -98,8 +98,8 @@ jobs:
           provenance: false
           sbom: false
           tags: |
-            ghcr.io/${{ github.repository_owner }}/arl-web:latest
-            ghcr.io/${{ github.repository_owner }}/arl-worker:latest
+            johnny1314/arl-web:latest
+            johnny1314/arl-worker:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -118,9 +118,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push Puppeteer Service
         uses: docker/build-push-action@v6
         with:
@@ -130,7 +130,7 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: ghcr.io/${{ github.repository_owner }}/arl-puppeteer:latest
+          tags: johnny1314/arl-puppeteer:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -147,9 +147,9 @@ jobs:
       - name: Login to Aliyun Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push OSINT Service
         uses: docker/build-push-action@v6
         with:
@@ -158,7 +158,7 @@ jobs:
           push: true
           provenance: false
           sbom: false
-          tags: ghcr.io/${{ github.repository_owner }}/osint-service:latest
+          tags: johnny1314/osint-service:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
