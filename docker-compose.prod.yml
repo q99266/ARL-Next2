@@ -11,7 +11,7 @@ services:
   # 前端 Nginx 容器：作为系统唯一的 HTTPS 流量网关与静态资源服务
   arl-frontend:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/arl-frontend:latest
+    image: johnny1314/arl-frontend:latest
     container_name: arl-frontend-prod
     restart: always
     mem_reservation: 64m
@@ -33,7 +33,7 @@ services:
   # 后端 Python Web 容器 (去除了 5000/5001 端口的公网暴露)
   arl-web:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/arl-web:latest
+    image: johnny1314/arl-web:latest
     container_name: arl-web-prod
     restart: always
     mem_reservation: 256m
@@ -66,7 +66,7 @@ services:
   # Puppeteer 无头浏览器渲染专属微服务 (常驻 HTTP 服务，解决 CPU 瓶颈)
   arl-puppeteer:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/arl-puppeteer:latest
+    image: johnny1314/arl-puppeteer:latest
     container_name: arl-puppeteer-prod
     restart: always
     mem_reservation: 256m
@@ -82,7 +82,7 @@ services:
   # 后台扫描任务 Worker
   arl-worker:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/arl-worker:latest
+    image: johnny1314/arl-worker:latest
     container_name: arl-worker-prod
     restart: always
     mem_reservation: 512m
@@ -123,7 +123,7 @@ services:
   # MongoDB 数据库 (去除了 ports "27018:27017" 的外网暴露)
   mongodb:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/mongo:7.0
+    image: johnny1314/mongo:7.0
     container_name: arl-mongodb-prod
     restart: always
     mem_reservation: 512m
@@ -149,7 +149,7 @@ services:
   # RabbitMQ 队列 (去除了 ports "5673:5672" 和 "15673:15672" 的外网暴露)
   rabbitmq:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/rabbitmq:3-alpine
+    image: johnny1314/rabbitmq:3-alpine
     container_name: arl-rabbitmq-prod
     restart: always
     mem_reservation: 128m
@@ -167,7 +167,7 @@ services:
   # 备案查询微服务 (去除了 ports 暴露)
   osint-service:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/osint-service:latest
+    image: johnny1314/osint-service:latest
     container_name: arl-osint-service-prod
     restart: always
     mem_reservation: 64m
@@ -177,7 +177,7 @@ services:
   # 容器级自愈探针护盾 (自动检测死锁并急救)
   autoheal:
     <<: *default-logging
-    image: crpi-laul1izptqrf0tkf.cn-beijing.personal.cr.aliyuncs.com/owl234-arl-prod/autoheal:latest
+    image: johnny1314/autoheal:latest
     container_name: arl-autoheal
     restart: always
     mem_reservation: 32m
